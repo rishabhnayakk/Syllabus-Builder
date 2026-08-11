@@ -1,0 +1,1344 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Syllabus Builder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --bg: #f5f0e8;
+        --surface: #fdfaf4;
+        --surface2: #f0ead8;
+        --border: rgba(80, 60, 20, 0.18);
+        --text: #2c1f0e;
+        --muted: #7a6a50;
+        --danger: #9b2020;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Lora", serif;
+        font-size: 15px;
+        line-height: 1.65;
+        min-height: 100vh;
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 200;
+        background: rgba(245, 240, 232, 0.97);
+        backdrop-filter: blur(8px);
+        border-bottom: 2px solid var(--border);
+        padding: 0 24px;
+      }
+      .header-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        height: 62px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: "Cinzel Decorative", cursive;
+        font-weight: 700;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+        color: var(--text);
+      }
+      .logo-badge {
+        background: #5a3e8c;
+        color: #fff;
+        font-family: "Cinzel", serif;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 3px 10px;
+        letter-spacing: 1px;
+      }
+
+      .hero {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 50px 24px 30px;
+        text-align: center;
+      }
+      .hero-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--surface2);
+        border: 2px solid var(--border);
+        padding: 5px 16px;
+        font-family: "Cinzel", serif;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--muted);
+        margin-bottom: 18px;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+      }
+      .hero-eyebrow span {
+        width: 7px;
+        height: 7px;
+        background: #5a3e8c;
+        display: inline-block;
+      }
+      .hero h1 {
+        font-family: "Cinzel Decorative", cursive;
+        font-size: clamp(26px, 4.5vw, 46px);
+        font-weight: 900;
+        line-height: 1.2;
+        color: var(--text);
+        margin-bottom: 12px;
+      }
+      .hero p {
+        font-style: italic;
+        color: var(--muted);
+        max-width: 480px;
+        margin: 0 auto 36px;
+      }
+
+      .btn {
+        background: var(--surface);
+        border: 2px solid var(--border);
+        color: var(--muted);
+        font-family: "Cinzel", serif;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        padding: 7px 18px;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-transform: uppercase;
+      }
+      .btn:hover {
+        color: var(--text);
+        border-color: #5a3e8c;
+        background: var(--surface2);
+      }
+      .btn-primary {
+        background: #5a3e8c;
+        border-color: #5a3e8c;
+        color: #fff;
+      }
+      .btn-primary:hover {
+        background: #4a2f78;
+        border-color: #4a2f78;
+        color: #fff;
+      }
+      .btn-danger {
+        border-color: var(--danger);
+        color: var(--danger);
+      }
+      .btn-danger:hover {
+        background: var(--danger);
+        color: #fff;
+        border-color: var(--danger);
+      }
+      .btn-sm {
+        font-size: 10px;
+        padding: 4px 10px;
+      }
+      .btn-icon {
+        width: 26px;
+        height: 26px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-family: sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+      }
+
+      .toolbar {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 24px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .toolbar-left {
+        display: flex;
+        gap: 8px;
+      }
+
+      main {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 24px 80px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 60px 24px;
+        border: 2px dashed var(--border);
+        background: var(--surface);
+      }
+      .empty-state h2 {
+        font-family: "Cinzel Decorative", cursive;
+        font-size: 20px;
+        color: var(--muted);
+        margin-bottom: 10px;
+      }
+      .empty-state p {
+        font-style: italic;
+        color: var(--muted);
+        margin-bottom: 20px;
+      }
+
+      .subject-card {
+        background: var(--surface);
+        border: 2px solid var(--border);
+        overflow: hidden;
+        transition:
+          border-color 0.3s,
+          box-shadow 0.3s;
+        position: relative;
+      }
+      .subject-card::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+      }
+      .subject-card:hover {
+        box-shadow: 4px 4px 0 rgba(80, 60, 20, 0.1);
+      }
+      .subject-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 20px 22px;
+        border-bottom: 2px solid transparent;
+        cursor: pointer;
+        user-select: none;
+        transition: border-color 0.3s;
+      }
+      .subject-card.open .subject-header {
+        border-bottom-color: var(--border);
+      }
+      .subject-icon {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        flex-shrink: 0;
+      }
+      .subject-meta {
+        flex: 1;
+        min-width: 0;
+      }
+      .subject-code {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        color: var(--muted);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 2px;
+      }
+      .subject-title {
+        font-family: "Cinzel", serif;
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .subject-actions {
+        display: none;
+      }
+
+      /* ── POPOVER MENU ── */
+      .rm-pop {
+        position: fixed;
+        z-index: 9999;
+        background: var(--surface);
+        border: 2px solid var(--border);
+        box-shadow: 4px 4px 0 rgba(80, 60, 20, 0.15);
+        padding: 4px 0;
+        min-width: 140px;
+      }
+      .rm-pop button {
+        display: block;
+        width: 100%;
+        text-align: left;
+        background: none;
+        border: none;
+        padding: 7px 14px;
+        font-family: "Cinzel", serif;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        color: var(--text);
+        cursor: pointer;
+        text-transform: uppercase;
+      }
+      .rm-pop button:hover {
+        background: var(--surface2);
+      }
+      .rm-pop button.danger {
+        color: var(--danger);
+      }
+      .rm-pop button.danger:hover {
+        background: var(--danger);
+        color: #fff;
+      }
+
+      .chevron {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--muted);
+        transition: transform 0.3s;
+        flex-shrink: 0;
+      }
+      .subject-card.open .chevron {
+        transform: rotate(180deg);
+      }
+
+      .units-body {
+        display: none;
+        padding: 18px 20px 22px;
+      }
+      .subject-card.open .units-body {
+        display: block;
+      }
+      .units-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 14px;
+      }
+
+      .unit-card {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        overflow: hidden;
+        transition: border-color 0.2s;
+      }
+      .unit-card.active {
+        border-color: rgba(80, 60, 20, 0.4);
+      }
+      .unit-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 11px 14px;
+        border-bottom: 1px solid var(--border);
+        cursor: pointer;
+        user-select: none;
+        transition: background 0.15s;
+      }
+      .unit-header:hover {
+        background: rgba(80, 60, 20, 0.04);
+      }
+      .unit-card.active .unit-header {
+        background: rgba(80, 60, 20, 0.06);
+      }
+      .unit-num {
+        font-family: "Cinzel", serif;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        padding: 3px 8px;
+        flex-shrink: 0;
+        text-transform: uppercase;
+      }
+      .unit-name-text {
+        font-family: "Cinzel", serif;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+        flex: 1;
+      }
+      .unit-complete-badge {
+        display: none;
+        font-family: "Cinzel", serif;
+        font-size: 10px;
+        font-weight: 700;
+        color: #2e7d32;
+        background: #c8e6c9;
+        padding: 3px 8px;
+        border-radius: 4px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        margin-left: auto;
+      }
+      .unit-card.complete .unit-complete-badge {
+        display: inline-block;
+      }
+      .unit-topics {
+        padding: 8px 14px 4px;
+      }
+      .unit-topics li {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 5px 8px;
+        margin: 0 -8px;
+        border-radius: 4px;
+        font-family: "Lora", serif;
+        font-size: 13px;
+        color: var(--muted);
+        list-style: none;
+        border-bottom: 1px solid var(--border);
+        transition:
+          color 0.15s,
+          background-color 0.15s;
+      }
+      .unit-topics li:last-child {
+        border-bottom: none;
+      }
+      .unit-topics li span {
+        flex: 1;
+      }
+      .unit-topics li.done {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+        border-bottom-color: transparent;
+      }
+      .unit-topics li:hover {
+        color: var(--text);
+      }
+      /* custom checkbox */
+      .lec-cb {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 14px;
+        height: 14px;
+        border: 2px solid var(--border);
+        background: var(--surface);
+        flex-shrink: 0;
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          border-color 0.15s;
+        margin-top: 1px;
+      }
+      .lec-cb:checked {
+        background: var(--accent, #5a3e8c);
+        border-color: var(--accent, #5a3e8c);
+      }
+      .lec-cb:checked::after {
+        content: "✓";
+        display: block;
+        color: #fff;
+        font-size: 9px;
+        text-align: center;
+        line-height: 10px;
+      }
+
+      /* progress strip */
+      .unit-progress {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 5px 14px 7px;
+        background: var(--surface2);
+        border-bottom: 1px solid var(--border);
+      }
+      .progress-bar-wrap {
+        flex: 1;
+        height: 4px;
+        background: var(--border);
+        overflow: hidden;
+      }
+      .progress-bar-fill {
+        height: 100%;
+        width: 0%;
+        background: var(--accent, #5a3e8c);
+        transition: width 0.35s ease;
+      }
+      .progress-pct {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--muted);
+        min-width: 30px;
+        text-align: right;
+      }
+      .unit-card.complete {
+        background: #e8f5e9;
+        border-color: #4caf50 !important;
+        transition:
+          background 0.5s ease,
+          border-color 0.5s ease;
+      }
+      .unit-card.complete .unit-header {
+        background: #c8e6c9;
+      }
+      .unit-card.complete .unit-progress {
+        display: none;
+      }
+      .unit-card.complete .progress-bar-fill {
+        background: #2e7d32 !important;
+      }
+      .unit-card.complete .progress-pct {
+        color: #2e7d32;
+      }
+      .unit-card.complete .unit-topics li {
+        color: #388e3c;
+      }
+      .unit-card.complete .unit-num {
+        background: rgba(46, 125, 50, 0.15) !important;
+        color: #2e7d32 !important;
+      }
+
+      .add-chapter-row {
+        display: none;
+        padding: 8px 14px 12px;
+        border-top: 2px solid var(--border);
+        background: var(--surface);
+      }
+      .unit-card.active .add-chapter-row {
+        display: block;
+        animation: fadeIn 0.18s ease;
+      }
+      .inline-form {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .inline-form input {
+        flex: 1;
+        min-width: 150px;
+        background: var(--surface);
+        border: 2px solid var(--border);
+        padding: 6px 10px;
+        font-family: "Lora", serif;
+        font-size: 13px;
+        color: var(--text);
+        outline: none;
+      }
+      .inline-form input:focus {
+        border-color: #5a3e8c;
+      }
+      .inline-form input::placeholder {
+        color: var(--muted);
+        font-style: italic;
+      }
+      .add-unit-row {
+        display: none;
+        margin-top: 14px;
+      }
+      .subject-card.active-add .add-unit-row {
+        display: block;
+        animation: fadeIn 0.18s ease;
+      }
+
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(44, 31, 14, 0.45);
+        z-index: 500;
+        align-items: center;
+        justify-content: center;
+      }
+      .modal-overlay.show {
+        display: flex;
+      }
+      .modal {
+        background: var(--surface);
+        border: 2px solid var(--border);
+        width: 100%;
+        max-width: 480px;
+        padding: 32px;
+        position: relative;
+        box-shadow: 6px 6px 0 rgba(80, 60, 20, 0.15);
+      }
+      .modal h2 {
+        font-family: "Cinzel Decorative", cursive;
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 24px;
+      }
+      .modal-close {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        color: var(--muted);
+      }
+      .form-group {
+        margin-bottom: 16px;
+      }
+      .form-group label {
+        display: block;
+        font-family: "Cinzel", serif;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+      .form-group input {
+        width: 100%;
+        background: var(--bg);
+        border: 2px solid var(--border);
+        padding: 9px 12px;
+        font-family: "Lora", serif;
+        font-size: 14px;
+        color: var(--text);
+        outline: none;
+      }
+      .form-group input:focus {
+        border-color: #5a3e8c;
+      }
+      .form-group input::placeholder {
+        color: var(--muted);
+        font-style: italic;
+      }
+      .color-row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .color-swatch {
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+        border: 3px solid transparent;
+        transition: transform 0.15s;
+      }
+      .color-swatch:hover {
+        transform: scale(1.15);
+      }
+      .color-swatch.selected {
+        border-color: var(--text);
+      }
+      .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-top: 24px;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .subject-card {
+        animation: fadeIn 0.35s ease both;
+      }
+      @media (max-width: 600px) {
+        .units-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-inner">
+        <div class="logo">
+          <span class="logo-badge">BUILDER</span>Syllabus Builder
+        </div>
+        <button class="btn btn-primary" id="openAddSubject">
+          + Add Subject
+        </button>
+      </div>
+    </header>
+
+    <div class="hero">
+      <div class="hero-eyebrow"><span></span>Custom Syllabus</div>
+      <h1>Build Your Syllabus</h1>
+      <p>
+        Add subjects, units and topics — organised in the same structured
+        layout.
+      </p>
+    </div>
+
+    <div class="toolbar">
+      <div class="toolbar-left">
+        <button class="btn" id="expandAll">Expand All</button>
+        <button class="btn" id="collapseAll">Collapse All</button>
+        <button class="btn btn-danger btn-sm" id="clearAll">Clear All</button>
+      </div>
+    </div>
+
+    <main id="subjectList">
+      <div class="empty-state" id="emptyState">
+        <h2>No Subjects Yet</h2>
+        <p>Click "Add Subject" to get started.</p>
+        <button class="btn btn-primary" onclick="openModal()">
+          + Add Your First Subject
+        </button>
+      </div>
+    </main>
+
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="modal">
+        <button class="modal-close" id="closeModal">&#x2715;</button>
+        <h2>Add Subject</h2>
+        <div class="form-group">
+          <label>Subject Code</label>
+          <input
+            type="text"
+            id="inputCode"
+            placeholder="e.g. CSE408"
+            maxlength="12"
+          />
+        </div>
+        <div class="form-group">
+          <label>Subject Name</label>
+          <input
+            type="text"
+            id="inputName"
+            placeholder="e.g. Design and Analysis of Algorithms"
+          />
+        </div>
+        <div class="form-group">
+          <label>Icon (Emoji)</label>
+          <input
+            type="text"
+            id="inputIcon"
+            placeholder="e.g. &#x2699;&#xFE0F;"
+            maxlength="4"
+          />
+        </div>
+        <div class="form-group">
+          <label>Accent Colour</label>
+          <div class="color-row" id="colorRow">
+            <div
+              class="color-swatch selected"
+              data-color="#5a3e8c"
+              style="background: #5a3e8c"
+            ></div>
+            <div
+              class="color-swatch"
+              data-color="#1a6ea8"
+              style="background: #1a6ea8"
+            ></div>
+            <div
+              class="color-swatch"
+              data-color="#1a7a5e"
+              style="background: #1a7a5e"
+            ></div>
+            <div
+              class="color-swatch"
+              data-color="#b85a10"
+              style="background: #b85a10"
+            ></div>
+            <div
+              class="color-swatch"
+              data-color="#a0326e"
+              style="background: #a0326e"
+            ></div>
+            <div
+              class="color-swatch"
+              data-color="#8a7000"
+              style="background: #8a7000"
+            ></div>
+            <div
+              class="color-swatch"
+              data-color="#c0392b"
+              style="background: #c0392b"
+            ></div>
+            <div
+              class="color-swatch"
+              data-color="#16697a"
+              style="background: #16697a"
+            ></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" id="cancelModal">Cancel</button>
+          <button class="btn btn-primary" id="saveSubject">Add Subject</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let subjects = JSON.parse(
+        localStorage.getItem("syllabusBuilder") || "[]",
+      );
+      let selectedColor = "#5a3e8c";
+
+      function save() {
+        localStorage.setItem("syllabusBuilder", JSON.stringify(subjects));
+      }
+
+      function hexAlpha(hex, a) {
+        const r = parseInt(hex.slice(1, 3), 16),
+          g = parseInt(hex.slice(3, 5), 16),
+          b = parseInt(hex.slice(5, 7), 16);
+        return "rgba(" + r + "," + g + "," + b + "," + a + ")";
+      }
+
+      function esc(s) {
+        return String(s || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      function render() {
+        const list = document.getElementById("subjectList");
+        const empty = document.getElementById("emptyState");
+        list.querySelectorAll(".subject-card").forEach((el) => el.remove());
+        empty.style.display = subjects.length ? "none" : "block";
+        subjects.forEach((s, si) => list.appendChild(buildCard(s, si)));
+      }
+
+      function buildCard(subj, si) {
+        const card = document.createElement("article");
+        card.className = "subject-card" + (subj.open !== false ? " open" : "");
+        card.id = "subj-" + si;
+
+        // Per-card style block
+        const styleEl = document.createElement("style");
+        styleEl.textContent =
+          "#subj-" +
+          si +
+          "::before{background:" +
+          subj.color +
+          "}" +
+          "#subj-" +
+          si +
+          " .subject-title{color:" +
+          subj.color +
+          "}" +
+          "#subj-" +
+          si +
+          " .subject-icon{background:" +
+          hexAlpha(subj.color, 0.12) +
+          "}" +
+          "#subj-" +
+          si +
+          " .unit-num{background:" +
+          hexAlpha(subj.color, 0.12) +
+          ";color:" +
+          subj.color +
+          "}" +
+          "#subj-" +
+          si +
+          " .unit-topics li::before{background:" +
+          subj.color +
+          "}";
+        card.appendChild(styleEl);
+
+        // Header
+        const hdr = document.createElement("div");
+        hdr.className = "subject-header";
+        hdr.innerHTML =
+          '<div class="subject-icon">' +
+          esc(subj.icon || "📚") +
+          "</div>" +
+          '<div class="subject-meta">' +
+          '<div class="subject-code">' +
+          esc(subj.code) +
+          "</div>" +
+          '<div class="subject-title">' +
+          esc(subj.name) +
+          "</div>" +
+          "</div>" +
+          '<div class="chevron"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>';
+        hdr.addEventListener("click", (e) => {
+          card.classList.toggle("open");
+          subjects[si].open = card.classList.contains("open");
+          save();
+        });
+        hdr.addEventListener("dblclick", (e) => {
+          e.preventDefault();
+          showPopover(e, [
+            {
+              label: "+ Add Unit",
+              action: () => {
+                document
+                  .querySelectorAll(".subject-card.active-add")
+                  .forEach((c) => c.classList.remove("active-add"));
+                card.classList.add("active-add");
+                card.classList.add("open");
+                subjects[si].open = true;
+                save();
+                setTimeout(() => {
+                  const inp = document.getElementById("unitInput-" + si);
+                  if (inp) inp.focus();
+                }, 50);
+              },
+            },
+            {
+              label: "✕ Remove Subject",
+              action: () => deleteSubject(si),
+              danger: true,
+            },
+          ]);
+        });
+
+        if (!window._subjDismissSet) {
+          window._subjDismissSet = true;
+          document.addEventListener("click", () => {
+            document
+              .querySelectorAll(".subject-card.active-add")
+              .forEach((c) => c.classList.remove("active-add"));
+          });
+        }
+
+        card.appendChild(hdr);
+
+        // Body
+        const body = document.createElement("div");
+        body.className = "units-body";
+
+        const grid = document.createElement("div");
+        grid.className = "units-grid";
+        grid.id = "units-" + si;
+        (subj.units || []).forEach((u, ui) =>
+          grid.appendChild(buildUnitCard(si, ui, u)),
+        );
+        body.appendChild(grid);
+
+        // Add unit row
+        const addUnitRow = document.createElement("div");
+        addUnitRow.className = "add-unit-row";
+        addUnitRow.innerHTML =
+          '<div class="inline-form">' +
+          '<input type="text" id="unitInput-' +
+          si +
+          '" placeholder="New unit name…">' +
+          '<button class="btn btn-sm add-unit-btn">+ Add Unit</button>' +
+          "</div>";
+        addUnitRow
+          .querySelector(".add-unit-btn")
+          .addEventListener("click", () => addUnit(si));
+        addUnitRow.querySelector("input").addEventListener("keydown", (e) => {
+          if (e.key === "Enter") addUnit(si);
+        });
+        body.appendChild(addUnitRow);
+
+        card.appendChild(body);
+        return card;
+      }
+
+      function buildUnitCard(si, ui, unit) {
+        const uc = document.createElement("div");
+        uc.className = "unit-card";
+        uc.id = "unit-" + si + "-" + ui;
+
+        const uhdr = document.createElement("div");
+        uhdr.className = "unit-header";
+        const romans = [
+          "I",
+          "II",
+          "III",
+          "IV",
+          "V",
+          "VI",
+          "VII",
+          "VIII",
+          "IX",
+          "X",
+        ];
+        const numLabel = romans[ui] || ui + 1;
+        uhdr.innerHTML =
+          '<span class="unit-num">' +
+          numLabel +
+          "</span>" +
+          '<span class="unit-name-text">' +
+          esc(unit.name) +
+          "</span>" +
+          '<span class="unit-complete-badge">100% Completed</span>';
+        uhdr.addEventListener("dblclick", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          showPopover(e, [
+            {
+              label: "+ Add Chapter",
+              action: () => {
+                document
+                  .querySelectorAll(".unit-card.active")
+                  .forEach((c) => c.classList.remove("active"));
+                uc.classList.add("active");
+                setTimeout(() => {
+                  const inp = document.getElementById(
+                    "chapterInput-" + si + "-" + ui,
+                  );
+                  if (inp) inp.focus();
+                }, 50);
+              },
+            },
+            {
+              label: "✕ Remove Unit",
+              action: () => deleteUnit(si, ui),
+              danger: true,
+            },
+          ]);
+        });
+        uc.appendChild(uhdr);
+
+        // Progress strip (inserted after header)
+        const prog = document.createElement("div");
+        prog.className = "unit-progress";
+        prog.id = "prog-" + si + "-" + ui;
+        prog.innerHTML =
+          '<div class="progress-bar-wrap"><div class="progress-bar-fill" id="pbar-' +
+          si +
+          "-" +
+          ui +
+          '"></div></div><span class="progress-pct" id="ppct-' +
+          si +
+          "-" +
+          ui +
+          '">0%</span>';
+        uc.appendChild(prog);
+
+        // Dismiss active when clicking outside any unit card
+        if (!window._unitDismissSet) {
+          window._unitDismissSet = true;
+          document.addEventListener("click", () => {
+            document
+              .querySelectorAll(".unit-card.active")
+              .forEach((c) => c.classList.remove("active"));
+          });
+        }
+
+        const ul = document.createElement("ul");
+        ul.className = "unit-topics";
+        ul.id = "topics-" + si + "-" + ui;
+        (unit.topics || []).forEach((t, ti) =>
+          ul.appendChild(buildTopicLi(si, ui, ti, t)),
+        );
+        uc.appendChild(ul);
+
+        // Set accent CSS var for progress bar colour
+        uc.style.setProperty("--accent", subjects[si].color || "#5a3e8c");
+
+        // Initial progress render
+        setTimeout(() => updateProgress(si, ui), 0);
+
+        const acr = document.createElement("div");
+        acr.className = "add-chapter-row";
+        acr.innerHTML =
+          '<div class="inline-form">' +
+          '<input type="text" id="chapterInput-' +
+          si +
+          "-" +
+          ui +
+          '" placeholder="Add a chapter / topic…">' +
+          '<button class="btn btn-sm add-ch-btn">+ Add</button>' +
+          "</div>";
+        acr
+          .querySelector(".add-ch-btn")
+          .addEventListener("click", () => addChapter(si, ui));
+        acr.querySelector("input").addEventListener("keydown", (e) => {
+          if (e.key === "Enter") addChapter(si, ui);
+        });
+        uc.appendChild(acr);
+
+        return uc;
+      }
+
+      function buildTopicLi(si, ui, ti, topic) {
+        // Support both old plain strings and new {text,done} objects
+        const text = typeof topic === "object" ? topic.text : topic;
+        const done = typeof topic === "object" ? !!topic.done : false;
+
+        const li = document.createElement("li");
+        if (done) li.classList.add("done");
+
+        // Checkbox
+        const cb = document.createElement("input");
+        cb.type = "checkbox";
+        cb.className = "lec-cb";
+        cb.checked = done;
+        cb.addEventListener("change", () => {
+          li.classList.toggle("done", cb.checked);
+          // persist
+          const topicObj = subjects[si].units[ui].topics[ti];
+          if (typeof topicObj === "object") {
+            topicObj.done = cb.checked;
+          } else {
+            subjects[si].units[ui].topics[ti] = {
+              text: topicObj,
+              done: cb.checked,
+            };
+          }
+          save();
+          updateProgress(si, ui);
+        });
+
+        const span = document.createElement("span");
+        span.textContent = text;
+
+        li.appendChild(cb);
+        li.appendChild(span);
+        li.addEventListener("dblclick", (e) => {
+          e.preventDefault();
+          showPopover(e, [
+            {
+              label: "✕ Remove Chapter",
+              action: () => removeTopic(si, ui, ti),
+              danger: true,
+            },
+          ]);
+        });
+        return li;
+      }
+
+      function updateProgress(si, ui) {
+        const topics =
+          (subjects[si] &&
+            subjects[si].units &&
+            subjects[si].units[ui] &&
+            subjects[si].units[ui].topics) ||
+          [];
+        const total = topics.length;
+        const done = topics.filter((t) =>
+          typeof t === "object" ? t.done : false,
+        ).length;
+        const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+
+        const fill = document.getElementById("pbar-" + si + "-" + ui);
+        const pctEl = document.getElementById("ppct-" + si + "-" + ui);
+        const uc = document.getElementById("unit-" + si + "-" + ui);
+        if (fill) fill.style.width = pct + "%";
+        if (pctEl) pctEl.textContent = pct + "%";
+        if (uc) uc.classList.toggle("complete", pct === 100 && total > 0);
+      }
+
+      // ── POPOVER ─────────────────────────────────────────────────────
+      let activePop = null;
+
+      function showPopover(e, actions) {
+        dismissPopover();
+        const pop = document.createElement("div");
+        pop.className = "rm-pop";
+        let html = "";
+        actions.forEach((act, idx) => {
+          const cls = act.danger ? "rm-action danger" : "rm-action";
+          html +=
+            '<button class="' +
+            cls +
+            '" data-idx="' +
+            idx +
+            '">' +
+            act.label +
+            "</button>";
+        });
+        pop.innerHTML = html;
+
+        pop.querySelectorAll(".rm-action").forEach((btn) => {
+          btn.addEventListener("click", (ev) => {
+            ev.stopPropagation();
+            dismissPopover();
+            const act = actions[btn.dataset.idx];
+            if (act && act.action) act.action();
+          });
+        });
+
+        // Position near cursor
+        document.body.appendChild(pop);
+        const x = Math.min(e.clientX, window.innerWidth - 160);
+        const y = Math.min(
+          e.clientY + 8,
+          window.innerHeight - (actions.length * 30 + 30),
+        );
+        pop.style.left = x + "px";
+        pop.style.top = y + "px";
+        activePop = pop;
+        e.stopPropagation();
+      }
+
+      function dismissPopover() {
+        if (activePop) {
+          activePop.remove();
+          activePop = null;
+        }
+      }
+
+      document.addEventListener("click", dismissPopover);
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") dismissPopover();
+      });
+
+      // ── CRUD ────────────────────────────────────────────────────────
+      function addUnit(si) {
+        const inp = document.getElementById("unitInput-" + si);
+        const name = inp.value.trim();
+        if (!name) {
+          inp.focus();
+          return;
+        }
+        subjects[si].units = subjects[si].units || [];
+        subjects[si].units.push({ name, topics: [] });
+        save();
+        inp.value = "";
+        render();
+      }
+
+      function deleteUnit(si, ui) {
+        if (!confirm("Delete this unit and all its chapters?")) return;
+        subjects[si].units.splice(ui, 1);
+        save();
+        render();
+      }
+
+      function addChapter(si, ui) {
+        const inp = document.getElementById("chapterInput-" + si + "-" + ui);
+        const text = inp.value.trim();
+        if (!text) {
+          inp.focus();
+          return;
+        }
+        subjects[si].units[ui].topics = subjects[si].units[ui].topics || [];
+        const ti = subjects[si].units[ui].topics.length;
+        const topicObj = { text, done: false };
+        subjects[si].units[ui].topics.push(topicObj);
+        save();
+        const ul = document.getElementById("topics-" + si + "-" + ui);
+        if (ul) ul.appendChild(buildTopicLi(si, ui, ti, topicObj));
+        updateProgress(si, ui);
+        inp.value = "";
+        inp.focus();
+      }
+
+      function removeTopic(si, ui, ti) {
+        subjects[si].units[ui].topics.splice(ti, 1);
+        save();
+        render();
+      }
+
+      function deleteSubject(si) {
+        if (!confirm("Delete this subject and all its units?")) return;
+        subjects.splice(si, 1);
+        save();
+        render();
+      }
+
+      // ── MODAL ───────────────────────────────────────────────────────
+      function openModal() {
+        ["inputCode", "inputName", "inputIcon"].forEach(
+          (id) => (document.getElementById(id).value = ""),
+        );
+        document.getElementById("modalOverlay").classList.add("show");
+        setTimeout(() => document.getElementById("inputCode").focus(), 50);
+      }
+      function closeModal() {
+        document.getElementById("modalOverlay").classList.remove("show");
+      }
+
+      document
+        .getElementById("openAddSubject")
+        .addEventListener("click", openModal);
+      document
+        .getElementById("closeModal")
+        .addEventListener("click", closeModal);
+      document
+        .getElementById("cancelModal")
+        .addEventListener("click", closeModal);
+      document.getElementById("modalOverlay").addEventListener("click", (e) => {
+        if (e.target === document.getElementById("modalOverlay")) closeModal();
+      });
+
+      document.getElementById("colorRow").addEventListener("click", (e) => {
+        const sw = e.target.closest(".color-swatch");
+        if (!sw) return;
+        document
+          .querySelectorAll(".color-swatch")
+          .forEach((s) => s.classList.remove("selected"));
+        sw.classList.add("selected");
+        selectedColor = sw.dataset.color;
+      });
+
+      document.getElementById("saveSubject").addEventListener("click", () => {
+        const code = document.getElementById("inputCode").value.trim();
+        const name = document.getElementById("inputName").value.trim();
+        const icon = document.getElementById("inputIcon").value.trim() || "📚";
+        if (!name) {
+          document.getElementById("inputName").focus();
+          return;
+        }
+        subjects.push({
+          code: code || "NEW",
+          name,
+          icon,
+          color: selectedColor,
+          open: true,
+          units: [],
+        });
+        save();
+        render();
+        closeModal();
+        setTimeout(() => {
+          const cards = document.querySelectorAll(".subject-card");
+          cards[cards.length - 1]?.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }, 120);
+      });
+
+      ["inputCode", "inputName", "inputIcon"].forEach((id) => {
+        document.getElementById(id).addEventListener("keydown", (e) => {
+          if (e.key === "Enter") document.getElementById("saveSubject").click();
+        });
+      });
+
+      document.getElementById("expandAll").addEventListener("click", () => {
+        subjects.forEach((s) => (s.open = true));
+        save();
+        render();
+      });
+      document.getElementById("collapseAll").addEventListener("click", () => {
+        subjects.forEach((s) => (s.open = false));
+        save();
+        render();
+      });
+      document.getElementById("clearAll").addEventListener("click", () => {
+        if (!confirm("Delete everything?")) return;
+        subjects = [];
+        save();
+        render();
+      });
+
+      render();
+    </script>
+  </body>
+</html>
